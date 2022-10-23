@@ -1,1 +1,1 @@
-worker: python mason.py
+worker:python mason.py
