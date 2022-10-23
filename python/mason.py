@@ -1,4 +1,4 @@
-#import sys
+import sys
 import requests
 import json
 
@@ -10,14 +10,16 @@ import json
 
 #API키 및 webhook url설정
 apikey="fa2c28b8566c6dac2d869658222919aa"
-slack_webhook_url = "https://hooks.slack.com/services/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"
+# slack_webhook_url = "https://hooks.slack.com/services/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"
+token="xoxb-1304965395075-4259462061701-MuSPKBLbgOcGwvm98VOdHwnt"
+channel = "#general"
 
 headers = {
     "Content-type": "application/json"
 }
 
 
-city_list = ["Seoul,KR", "usan,KR", "Daejeon,KR", "Cheonan,KR" , "Asan,KR"]
+city_list = ["Seoul,KR", "Busan,KR", "Daejeon,KR", "Cheonan,KR", "Asan,KR"]
 
 #API 지정
 api="http://api.openweathermap.org/data/2.5/weather?q={city}&APPID={key}"
@@ -79,12 +81,17 @@ for name in city_list:
 
 #slack으로 출력
 f = open('stdout.txt' , "r")
-data = { "text" : f.read()}
+# text = { "text" : f.read()}
+text=f.read()
 
-res = requests.post(slack_webhook_url, headers=headers, json=data)
+requests.post("https://slack.com/api/chat.postMessage",
+    headers={"Authorization": "Bearer "+token},
+    data={"channel": channel,"text": text})
+
+# res = requests.post(slack_webhook_url, headers=headers, json=data)
 print(res.status_code)
 
-#txt 파일 삭제
+#txt 파일삭제
 f = open('stdout.txt' , 'w')
 f.write('\n')
 f.close()
